@@ -1,0 +1,6 @@
+@HopeConnect.Customer.Api_HostAddress = http://localhost:5105
+
+GET {{HopeConnect.Customer.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
