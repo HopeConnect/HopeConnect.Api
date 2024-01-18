@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "hopeconnect-8658a",
+  "private_key_id": "a5a572fc4c9cfe60799ce6da6f75f0d4abbe9cd0",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDrGnKGfP+VMyXL\nBZbJLLTKwpUeXeYuBUhh7rLmxpnW8HiI9vQZJ6SzHRn6dAuFfL5vMQJ+KfyHM+Jh\nXluoy0GbUoTvuB+79BWydtZ7qv92G03p5GddOUN9i89Yj7iEPSyuiWbArMQCC1Nv\n3tJru5tTFqr8jZr2gAKrUoUpnypy27URUvLFFKN3hW6lg4Q28sC+JlRzYFePrRaP\nm91qGGbwp90b8P7fIsos10taW6zAT5fOAnSz2/J2JI6en/wSbC+ltW3mJF4HutWE\n9hCswncdo7Z0FGwUH9w1bHcMQD2LBW3JgkNamR2yNQgFrCpXO5sUnUmKbxfCRQg6\nscsUNHSPAgMBAAECggEAEkhCjajHaz/IpEAGrhWMPZQ3al7HmTPkoWZMLTFWdztz\nSXCtd2NOJcuRNe5ePal/WZWIacKJa64iNYt+jzgMcwVOEczR/Ziz3eaV3pS5PDhQ\nAmyLiS6nIT/aW5BZkJb9Ptlaed3gJCnjTs4XXjSplc2BIGtBQ1fzB9rpQLJVkmF9\n9bxxQlMjJ/UZ5tjuXcASrA4Qd6rvYhXpKXZDg9WuT5/9ilV01FbwxyraBIFiEEAb\n6lDErHsHLiS37IG8pyUzAfmwLA6C9pqpH9igX0wwfshfaNJRxrlriZiUHftKmP8q\nH5+Hm4bH+GD1bzKW/oDqM76Gyr8OXitGCBR+8080yQKBgQD5RgoCWcDyymZDEvBA\nc4z2/XJYfG7TS+2Y8RV86nGZt1FHYKpQd6EJ4IqzGmH/rHnvisv686Vrmddnhql8\nqlqxpWDj6fYYG4+LmEeprPA+eoJ2QifG3ni6Uq+t9ABpIUVcFXuzlHVbItTRITJl\nW6Neh/iWfO/FEWDAV5Xt4erafQKBgQDxcoVrP6e86VILthB3UUgQGtl/iUQt9vYy\np3HiJJqwOYHcKFSSFWfPBwOdY566LEn8mQrB43UdzLe99orCIzUZYJ+2YuvmDpSO\nO0pYeCHu8rAEivuifq48RgYfSCIyd34KkG2tPZ9fi1xfZ793IovCnpcCY56lOlhS\n51oiOans+wKBgQC/5Z9G9/mF7zKSaD30IABhE/O3EvPuTgF3QAEezQzvHSTBIjV7\nBN1AUU/1WVYgEZM9SUiGxJKQJzqgRBauFicDoyDX1ADTxkPXXz+r66p3LrDIgV1F\nx3aBWa5M6A544FgY76DvOlat9j6HUFsPlGBMIbjJgRzERQCKkeKl4sl9sQKBgBoU\ne7Lc+lpefX1EWjz5K6aJr+qlwhaQ8YEBMzzxJUBZxdwpAxGQfFkRceODSjbj584A\nHfhZgGIKpeJACjb0JJ0sIbRKtR5xfrxqTRqHR2sPDdI/zPR9aIacLbcdTIxU+elc\nNmybFmb0n7Kyeyz8L0qDZN5eMlm4lqfF06eUwPUXAoGBANJIS8cBRCWzicgz3Wzy\nSS/JsiL1uH6xy/rRkbjveELnDgFmxgDaadfFuyyo35Tvy+S6XkTTVLY1gC4Kf+GE\nugfNqeMvY1VR4Hq/w7clSS3Eopw+US+KD3DXuJ8ThVwByI3D86yTbmiKuwIBwFyQ\nmnmxtIYOHFaVZ1VqThRAq1z+\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-iadrl@hopeconnect-8658a.iam.gserviceaccount.com",
+  "client_id": "107599130163752669438",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-iadrl%40hopeconnect-8658a.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
