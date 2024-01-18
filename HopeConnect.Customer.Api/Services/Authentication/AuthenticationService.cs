@@ -1,5 +1,7 @@
 ﻿using FirebaseAdmin.Auth;
+using HopeConnect.Customer.Api.BusinessUnit;
 using HopeConnect.Customer.Api.Infrastructure.Dto;
+using HopeConnect.Customer.Api.Infrastructure.Model;
 using HopeConnect.Customer.Api.Shared.ComplexTypes;
 using HopeConnect.Customer.Api.Shared.Concrete;
 
@@ -8,9 +10,11 @@ namespace HopeConnect.Customer.Api.Services.Authentication
 	public class AuthenticationService : IAuthenticationService
 	{
 		private readonly HttpClient _httpClient;
-		public AuthenticationService(HttpClient httpClient)
+		private readonly IUserBusinessUnit _userBusinessUnit;
+		public AuthenticationService(HttpClient httpClient, IUserBusinessUnit userBusinessUnit)
 		{
 			_httpClient = httpClient;
+			_userBusinessUnit = userBusinessUnit;
 		}
 
 		public async Task<Response<string>> LoginAsync(LoginRequestDto loginRequestDto)
@@ -42,11 +46,17 @@ namespace HopeConnect.Customer.Api.Services.Authentication
 				Password = registerRequestDto.Password 
 			};
 			var userRecord = await FirebaseAuth.DefaultInstance.CreateUserAsync(userArgs);
-			if (userRecord == null)
+			var user = await _userBusinessUnit.TAddAsync(new User
 			{
-				return new Response(ResponseCode.InternalServerError, "User creation failed");
+				Email = registerRequestDto.Email,
+				FullName = registerRequestDto.FullName,
+				FirebaseUserId = userRecord.Uid
+			});
+			if(user.ResponseCode == ResponseCode.Success)
+			{
+				return new Response(ResponseCode.Success, "User created successfully");
 			}
-			return new Response(ResponseCode.Success, "User created successfully");
+			return new Response(ResponseCode.BadRequest, "User not added");
 		}
 	}
 }
