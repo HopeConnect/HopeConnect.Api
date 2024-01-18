@@ -13,6 +13,7 @@ namespace HopeConnect.Customer.Api.BusinessUnit
 		Task<Response> TUpdateAsync(User user);
 		Task<Response> TDeleteAsync(int userId);
 		Task<Response<IList<UserListDto>>> TGetUserByUserFirebaseIdAsync();
+		Task<Response<IList<User>>> TGetAllUserAsync();
 	}
 	public class UserBusinessUnit : IUserBusinessUnit
 	{
@@ -41,6 +42,16 @@ namespace HopeConnect.Customer.Api.BusinessUnit
 		public Task<Response> TDeleteAsync(int userId)
 		{
 			throw new NotImplementedException();
+		}
+
+		public async Task<Response<IList<User>>> TGetAllUserAsync()
+		{
+			var userEntity = await _userDataAccess.GetAllUser();
+			if (userEntity.Any())
+			{
+				return new Response<IList<User>>(ResponseCode.Success, "User list Success.",userEntity);
+			}
+			return new Response<IList<User>>(ResponseCode.NotFound, "Users not found");
 		}
 
 		public async Task<Response<IList<UserListDto>>> TGetUserByUserFirebaseIdAsync()
