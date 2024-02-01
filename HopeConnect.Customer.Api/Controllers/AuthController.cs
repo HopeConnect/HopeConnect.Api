@@ -1,7 +1,6 @@
 ﻿using HopeConnect.Customer.Api.Infrastructure.Dto;
 using HopeConnect.Customer.Api.Services.Authentication;
 using HopeConnect.Customer.Api.Shared.Concrete;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HopeConnect.Customer.Api.Controllers

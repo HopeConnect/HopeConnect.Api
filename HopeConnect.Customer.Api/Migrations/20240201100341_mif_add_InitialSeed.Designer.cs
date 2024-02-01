@@ -3,6 +3,7 @@ using HopeConnect.Customer.Api.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HopeConnect.Customer.Api.Migrations
 {
     [DbContext(typeof(HopeConnectContext))]
-    partial class HopeConnectContextModelSnapshot : ModelSnapshot
+    [Migration("20240201100341_mif_add_InitialSeed")]
+    partial class mif_add_InitialSeed
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,7 +54,7 @@ namespace HopeConnect.Customer.Api.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Accommodations", (string)null);
+                    b.ToTable("Accommodations");
                 });
 
             modelBuilder.Entity("HopeConnect.Customer.Api.Infrastructure.Model.Clothes", b =>
@@ -84,7 +87,7 @@ namespace HopeConnect.Customer.Api.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Clothes", (string)null);
+                    b.ToTable("Clothes");
                 });
 
             modelBuilder.Entity("HopeConnect.Customer.Api.Infrastructure.Model.Education", b =>
@@ -117,7 +120,7 @@ namespace HopeConnect.Customer.Api.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Educations", (string)null);
+                    b.ToTable("Educations");
                 });
 
             modelBuilder.Entity("HopeConnect.Customer.Api.Infrastructure.Model.Food", b =>
@@ -150,7 +153,7 @@ namespace HopeConnect.Customer.Api.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Foods", (string)null);
+                    b.ToTable("Foods");
                 });
 
             modelBuilder.Entity("HopeConnect.Customer.Api.Infrastructure.Model.User", b =>
@@ -172,7 +175,7 @@ namespace HopeConnect.Customer.Api.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
                 });
 #pragma warning restore 612, 618
         }
