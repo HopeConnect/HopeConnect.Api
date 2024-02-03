@@ -10,7 +10,7 @@ namespace HopeConnect.Customer.Api.DataAccess
 		Task<int> AddAsync(User user);
 		Task<int> DeleteAsync(User user);
 		Task<int> UpdateAsync(User user);
-		Task<IList<UserListDto>> GetUserByUserFirebaseIdAsync(string userFirebaseId);
+		Task<UserListDto> GetUserByUserFirebaseIdAsync(string userFirebaseId);
 		Task<IList<User>> GetAllUser();
 	}
 	public class UserDataAccess : IUserDataAccess
@@ -39,14 +39,15 @@ namespace HopeConnect.Customer.Api.DataAccess
 			return await _context.Users.AsNoTracking().OrderByDescending(x=> x.Id).ToListAsync();
 		}
 
-		public async Task<IList<UserListDto>> GetUserByUserFirebaseIdAsync(string userFirebaseId)
+		public async Task<UserListDto> GetUserByUserFirebaseIdAsync(string userFirebaseId)
 		{
-			return await _context.Users.AsNoTracking().Where(x => x.FirebaseUserId == userFirebaseId).OrderByDescending(x=>x.Id).Take(1).Select(x => new UserListDto
+			return await _context.Users.AsNoTracking().OrderByDescending(x=>x.Id).Take(1).Select(x => new UserListDto
 			{
+				FirebaseId = x.FirebaseUserId,
 				Email = x.Email,
 				FullName = x.FullName,
-				
-			}).ToListAsync();
+				UserImageName = x.ImageName
+			}).FirstOrDefaultAsync(x=> x.FirebaseId == userFirebaseId);
 		}
 		public async Task<int> UpdateAsync(User user)
 		{

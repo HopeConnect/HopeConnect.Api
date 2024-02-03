@@ -19,7 +19,7 @@ namespace HopeConnect.Customer.Api.Controllers
 		}
 		[HttpGet]
 		[Route("GetUserByUserFirebaseId")]
-		public async Task<Response<IList<UserListDto>>> GetUserByUserFirebaseIdAsync()
+		public async Task<Response<UserListDto>> GetUserByUserFirebaseIdAsync()
 		{
 			return await _userBusinessUnit.TGetUserByUserFirebaseIdAsync();
 		}

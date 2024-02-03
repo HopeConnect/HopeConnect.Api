@@ -1,4 +1,5 @@
 ﻿using HopeConnect.Customer.Api.DataAccess;
+using HopeConnect.Customer.Api.Infrastructure.Cloud;
 using HopeConnect.Customer.Api.Infrastructure.Dto;
 using HopeConnect.Customer.Api.Infrastructure.Model;
 using HopeConnect.Customer.Api.Infrastructure.Utility;
@@ -12,17 +13,19 @@ namespace HopeConnect.Customer.Api.BusinessUnit
 		Task<Response> TAddAsync(User user);
 		Task<Response> TUpdateAsync(User user);
 		Task<Response> TDeleteAsync(int userId);
-		Task<Response<IList<UserListDto>>> TGetUserByUserFirebaseIdAsync();
+		Task<Response<UserListDto>> TGetUserByUserFirebaseIdAsync();
 		Task<Response<IList<User>>> TGetAllUserAsync();
 	}
 	public class UserBusinessUnit : IUserBusinessUnit
 	{
 		private readonly IUserDataAccess _userDataAccess;
 		private readonly IUserUtility _userUtility;
-		public UserBusinessUnit(IUserDataAccess userDataAccess, IUserUtility userUtility)
+		private readonly IGoogleCloudStroge _googleCloudStroge;
+		public UserBusinessUnit(IUserDataAccess userDataAccess, IUserUtility userUtility, IGoogleCloudStroge googleCloudStroge)
 		{
 			_userDataAccess = userDataAccess;
 			_userUtility = userUtility;
+			_googleCloudStroge = googleCloudStroge;
 		}
 		public async Task<Response> TAddAsync(User user)
 		{
@@ -54,19 +57,25 @@ namespace HopeConnect.Customer.Api.BusinessUnit
 			return new Response<IList<User>>(ResponseCode.NotFound, "Users not found");
 		}
 
-		public async Task<Response<IList<UserListDto>>> TGetUserByUserFirebaseIdAsync()
+		public async Task<Response<UserListDto>> TGetUserByUserFirebaseIdAsync()
 		{
 			var firebaseUserId = _userUtility.GetFirebaseUserId();
 			if (string.IsNullOrEmpty(firebaseUserId))
 			{
-				return new Response<IList<UserListDto>>(ResponseCode.BadRequest, "Firebase user id cannot be empty");
+				return new Response<UserListDto>(ResponseCode.BadRequest, "Firebase user id cannot be empty");
 			}
 			var userEntity = await _userDataAccess.GetUserByUserFirebaseIdAsync(firebaseUserId);
-			if (userEntity.Any())
+			if (userEntity != null)
 			{
-				return new Response<IList<UserListDto>>(ResponseCode.Success, userEntity);
+				var userImageUrl = _googleCloudStroge.GenerateDownloadUrl("UserImage", userEntity.UserImageName);
+				if(userImageUrl == null)
+				{
+					return new Response<UserListDto>(ResponseCode.NotFound, "User Image Not Found!");
+				}
+				userEntity.UserImageUrl = userImageUrl;
+				return new Response<UserListDto>(ResponseCode.Success, userEntity);
 			}
-			return new Response<IList<UserListDto>>(ResponseCode.NotFound, "User not found");
+			return new Response<UserListDto>(ResponseCode.NotFound, "User not found");
 		}
 
 		public Task<Response> TUpdateAsync(User user)

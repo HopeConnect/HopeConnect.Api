@@ -3,6 +3,7 @@ using Google.Apis.Auth.OAuth2;
 using HopeConnect.Customer.Api.BusinessUnit;
 using HopeConnect.Customer.Api.DataAccess;
 using HopeConnect.Customer.Api.Infrastructure;
+using HopeConnect.Customer.Api.Infrastructure.Cloud;
 using HopeConnect.Customer.Api.Infrastructure.Utility;
 using HopeConnect.Customer.Api.Services.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -30,6 +31,7 @@ builder.Services.AddTransient<IEducationBusinessUnit, EducationBusinessUnit>();
 builder.Services.AddTransient<IEducationDataAccess, EducationDataAccess>();
 builder.Services.AddTransient<IFoodBusinessUnit,FoodBusinessUnit>();
 builder.Services.AddTransient<IFoodDataAccess, FoodDataAccess>();
+builder.Services.AddTransient<IGoogleCloudStroge,GoogleCloudStroge>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
