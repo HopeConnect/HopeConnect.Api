@@ -36,6 +36,7 @@ namespace HopeConnect.Customer.Api.DataAccess
         {
             return await _context.Educations.AsNoTracking().OrderByDescending(x => x.Id).Select(x => new EducationListDto
             {
+                Id = x.Id,
                 ImageUrl = x.ImageUrl,
                 Title = x.Title,
                 Name = x.Name,

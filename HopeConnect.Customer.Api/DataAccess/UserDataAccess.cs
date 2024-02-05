@@ -12,6 +12,7 @@ namespace HopeConnect.Customer.Api.DataAccess
 		Task<int> UpdateAsync(User user);
 		Task<UserListDto> GetUserByUserFirebaseIdAsync(string userFirebaseId);
 		Task<IList<User>> GetAllUser();
+		Task<User> GetUserIdAsync(string userFirebaseId);
 	}
 	public class UserDataAccess : IUserDataAccess
 	{
@@ -41,13 +42,19 @@ namespace HopeConnect.Customer.Api.DataAccess
 
 		public async Task<UserListDto> GetUserByUserFirebaseIdAsync(string userFirebaseId)
 		{
-			return await _context.Users.AsNoTracking().OrderByDescending(x=>x.Id).Take(1).Select(x => new UserListDto
+			var user =  await _context.Users.AsNoTracking().Where(x=>x.FirebaseUserId == userFirebaseId).OrderByDescending(x=>x.Id).Take(1).Select(x => new UserListDto
 			{
 				FirebaseId = x.FirebaseUserId,
 				Email = x.Email,
 				FullName = x.FullName,
 				UserImageName = x.ImageName
-			}).FirstOrDefaultAsync(x=> x.FirebaseId == userFirebaseId);
+			}).FirstOrDefaultAsync();
+			return user;
+		}
+
+		public async Task<User> GetUserIdAsync(string userFirebaseId)
+		{
+			return await _context.Users.AsNoTracking().Where(x => x.FirebaseUserId == userFirebaseId).FirstOrDefaultAsync();
 		}
 		public async Task<int> UpdateAsync(User user)
 		{

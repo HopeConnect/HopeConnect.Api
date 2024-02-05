@@ -31,6 +31,8 @@ builder.Services.AddTransient<IEducationBusinessUnit, EducationBusinessUnit>();
 builder.Services.AddTransient<IEducationDataAccess, EducationDataAccess>();
 builder.Services.AddTransient<IFoodBusinessUnit,FoodBusinessUnit>();
 builder.Services.AddTransient<IFoodDataAccess, FoodDataAccess>();
+builder.Services.AddTransient<IUserActivitiyDataAccess, UserActivitiyDataAccess>();
+builder.Services.AddTransient<IUserActivitiyBusinessUnit,  UserActivitiyBusinessUnit>();
 builder.Services.AddTransient<IGoogleCloudStroge,GoogleCloudStroge>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

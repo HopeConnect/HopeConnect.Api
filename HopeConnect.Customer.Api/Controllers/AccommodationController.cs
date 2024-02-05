@@ -2,12 +2,14 @@
 using HopeConnect.Customer.Api.Infrastructure.Dto;
 using HopeConnect.Customer.Api.Infrastructure.Model;
 using HopeConnect.Customer.Api.Shared.Concrete;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HopeConnect.Customer.Api.Controllers
 {
     [Route("api/[controller]")]
-    [ApiController]
+	[Authorize]
+	[ApiController]
     public class AccommodationController : ControllerBase
     {
         private readonly IAcommodationBusinessUnit _acommodationBusinessUnit;

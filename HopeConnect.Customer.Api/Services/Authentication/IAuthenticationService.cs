@@ -7,5 +7,6 @@ namespace HopeConnect.Customer.Api.Services.Authentication
 	{
 		Task<Response> RegisterAsync(RegisterRequestDto registerRequestDto);
 		Task<Response<string>> LoginAsync (LoginRequestDto loginRequestDto);
+		Task<Response<string>> DeleteAsync();
 	}
 }

@@ -34,6 +34,7 @@ namespace HopeConnect.Customer.Api.DataAccess
         {
             return await _context.Accommodations.AsNoTracking().OrderByDescending(x => x.Id).Select(x => new AccommodationListDto
             {
+                Id = x.Id,
                 ImageUrl = x.ImageUrl,
                 Title = x.Title,
                 Name = x.Name,

@@ -1,6 +1,7 @@
 ﻿using HopeConnect.Customer.Api.Infrastructure.Dto;
 using HopeConnect.Customer.Api.Services.Authentication;
 using HopeConnect.Customer.Api.Shared.Concrete;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HopeConnect.Customer.Api.Controllers
@@ -28,6 +29,13 @@ namespace HopeConnect.Customer.Api.Controllers
 		{
 			var response = await _authenticationService.LoginAsync(loginRequestDto);
 			return response;
+		}
+		[HttpDelete]
+		[Authorize]
+		[Route("delete")]
+		public async Task<Response<string>> Delete()
+		{
+			return await _authenticationService.DeleteAsync();
 		}
 	}
 }

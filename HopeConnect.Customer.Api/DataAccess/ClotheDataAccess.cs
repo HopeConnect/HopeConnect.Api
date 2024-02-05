@@ -37,6 +37,7 @@ namespace HopeConnect.Customer.Api.DataAccess
         {
             return await _context.Clothes.AsNoTracking().OrderByDescending(x=> x.Id).Select(x=> new ClotheListDto
             {
+                Id = x.Id,
                 ImageUrl = x.ImageUrl,
                 Title = x.Title,
                 Name = x.Name,

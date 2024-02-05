@@ -38,6 +38,7 @@ namespace HopeConnect.Customer.Api.DataAccess
         {
             return await _context.Foods.AsNoTracking().OrderByDescending(x => x.Id).Select(x => new FoodListDto
             {
+                Id = x.Id,
                 Name = x.Name,
                 Location = x.Location,
                 Title = x.Title,

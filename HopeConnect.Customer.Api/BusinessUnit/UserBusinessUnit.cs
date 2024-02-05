@@ -12,9 +12,10 @@ namespace HopeConnect.Customer.Api.BusinessUnit
 	{
 		Task<Response> TAddAsync(User user);
 		Task<Response> TUpdateAsync(User user);
-		Task<Response> TDeleteAsync(int userId);
+		Task<Response> TDeleteByFirebaseUserIdAsync(string firebaseUserId);
 		Task<Response<UserListDto>> TGetUserByUserFirebaseIdAsync();
 		Task<Response<IList<User>>> TGetAllUserAsync();
+		Task<Response<int>> TGetUserIdByUserFirebaseIdAsync();
 	}
 	public class UserBusinessUnit : IUserBusinessUnit
 	{
@@ -33,6 +34,8 @@ namespace HopeConnect.Customer.Api.BusinessUnit
 			{
 				return new Response(ResponseCode.BadRequest, "User cannot be null");
 			}
+			user.FolderName = "UserImage";
+			user.ImageName = "UserProfileImage.png";
 			var saveChangesValue = await _userDataAccess.AddAsync(user);
 			if (saveChangesValue > 0)
 			{
@@ -41,10 +44,23 @@ namespace HopeConnect.Customer.Api.BusinessUnit
 			return new Response(ResponseCode.BadRequest, "User cannot be added");
 
 		}
-
-		public Task<Response> TDeleteAsync(int userId)
+		public async Task<Response> TDeleteByFirebaseUserIdAsync(string firebaseUserId)
 		{
-			throw new NotImplementedException();
+			if (string.IsNullOrEmpty(firebaseUserId))
+			{
+				return new Response(ResponseCode.BadRequest, "Firebase user id is empty");
+			}
+			var userEntity = await _userDataAccess.GetUserIdAsync(firebaseUserId);
+			if (userEntity == null)
+			{
+				return new Response(ResponseCode.NotFound, "User not found");
+			}
+			var saveChangesValue = await _userDataAccess.DeleteAsync(userEntity);
+			if (saveChangesValue > 0)
+			{
+				return new Response(ResponseCode.Success, "User deleted successfully");
+			}
+			return new Response(ResponseCode.BadRequest, "User not deleted");
 		}
 
 		public async Task<Response<IList<User>>> TGetAllUserAsync()
@@ -76,6 +92,21 @@ namespace HopeConnect.Customer.Api.BusinessUnit
 				return new Response<UserListDto>(ResponseCode.Success, userEntity);
 			}
 			return new Response<UserListDto>(ResponseCode.NotFound, "User not found");
+		}
+
+		public async Task<Response<int>> TGetUserIdByUserFirebaseIdAsync()
+		{
+			var firebaseUserId = _userUtility.GetFirebaseUserId();
+			if (string.IsNullOrEmpty(firebaseUserId))
+			{
+				return new Response<int>(ResponseCode.BadRequest, "Firebase user id cannot be empty");
+			}
+			var user = await _userDataAccess.GetUserIdAsync(firebaseUserId);
+			if(user != null )
+			{	
+				return new Response<int>(ResponseCode.Success,user.Id);
+			}
+			return new Response<int>(ResponseCode.NotFound, "User Id not found!");
 		}
 
 		public Task<Response> TUpdateAsync(User user)

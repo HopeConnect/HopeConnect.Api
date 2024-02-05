@@ -14,6 +14,7 @@ namespace HopeConnect.Customer.Api.Infrastructure
         public DbSet<Clothes> Clothes { get; set; }
         public DbSet<Education> Educations { get; set; }
         public DbSet<Accommodation> Accommodations { get; set; }
+        public DbSet<UserActivitiy> UserActivities { get; set; }
     }
     public class SampleDataSeeder
     {
