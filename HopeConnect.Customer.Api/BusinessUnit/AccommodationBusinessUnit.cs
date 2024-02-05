@@ -1,4 +1,5 @@
 ﻿using HopeConnect.Customer.Api.DataAccess;
+using HopeConnect.Customer.Api.Infrastructure.Cloud;
 using HopeConnect.Customer.Api.Infrastructure.Dto;
 using HopeConnect.Customer.Api.Infrastructure.Model;
 using HopeConnect.Customer.Api.Shared.ComplexTypes;
@@ -16,13 +17,15 @@ namespace HopeConnect.Customer.Api.BusinessUnit
     public class AccommodationBusinessUnit: IAcommodationBusinessUnit
     {
         private readonly IAccommodationDataAccess _accommodationDataAccess;
+        private readonly IGoogleCloudStroge _googleCloudStroge;
 
-        public AccommodationBusinessUnit(IAccommodationDataAccess accommodationDataAccess)
-        {
-            _accommodationDataAccess = accommodationDataAccess;
-        }
+		public AccommodationBusinessUnit(IAccommodationDataAccess accommodationDataAccess, IGoogleCloudStroge googleCloudStroge)
+		{
+			_accommodationDataAccess = accommodationDataAccess;
+			_googleCloudStroge = googleCloudStroge;
+		}
 
-        public async Task<Response> TAddAsync(Accommodation accommodation)
+		public async Task<Response> TAddAsync(Accommodation accommodation)
         {
             if (accommodation == null)
             {
@@ -44,11 +47,21 @@ namespace HopeConnect.Customer.Api.BusinessUnit
 
         public async Task<Response<IList<AccommodationListDto>>> TGetAllAccommodationAsync()
         {
-            var accommodationEntity = await _accommodationDataAccess.GetAllAccommodation();
-            if (accommodationEntity.Any())
+            var accommodationEntities = await _accommodationDataAccess.GetAllAccommodation();
+            if (accommodationEntities.Any())
             {
-                return new Response<IList<AccommodationListDto>>(ResponseCode.Success, "Accommodation list Success.", accommodationEntity);
-            }
+               var accommodationList = accommodationEntities.ToList();
+                foreach (var accommodationEntity in accommodationList)
+                {
+                    var userImageUrl = _googleCloudStroge.GenerateDownloadUrl("Accommodation", accommodationEntity.ImageName);
+                    if (userImageUrl == null)
+                    {
+                        return new Response<IList<AccommodationListDto>>(ResponseCode.NotFound, $"User Image Not Found for {accommodationEntity.ImageName}!");
+                    }
+                    accommodationEntity.ImageUrl = userImageUrl;
+                }
+				return new Response<IList<AccommodationListDto>>(ResponseCode.Success, "Accommodation list Success.", accommodationList);
+			}
             return new Response<IList<AccommodationListDto>>(ResponseCode.NotFound, "Accommodation not found");
         }
 

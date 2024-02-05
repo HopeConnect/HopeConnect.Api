@@ -165,7 +165,7 @@ namespace HopeConnect.Customer.Api.Infrastructure
                 context.Accommodations.AddRange(
                     new Accommodation
                     {
-                        ImageUrl = "/images/accommodation1.jpg",
+                        ImageName = "/images/accommodation1.jpg",
                         Title = "Temporary Shelter",
                         Name = "Johnson",
                         Location = "Paris, France",
@@ -173,7 +173,7 @@ namespace HopeConnect.Customer.Api.Infrastructure
                     },
                     new Accommodation
                     {
-                        ImageUrl = "/images/accommodation2.jpg",
+						ImageName = "/images/accommodation2.jpg",
                         Title = "Housing Assistance",
                         Name = "Kim",
                         Location = "Seoul, South Korea",
@@ -181,7 +181,7 @@ namespace HopeConnect.Customer.Api.Infrastructure
                     },
                     new Accommodation
                     {
-                        ImageUrl = "/images/accommodation3.jpg",
+						ImageName = "/images/accommodation3.jpg",
                         Title = "Home for Family",
                         Name = "Rodriguez",
                         Location = "Buenos Aires, AR",
@@ -189,7 +189,7 @@ namespace HopeConnect.Customer.Api.Infrastructure
                     },
                     new Accommodation
                     {
-                        ImageUrl = "/images/accommodation4.jpg",
+						ImageName = "/images/accommodation4.jpg",
                         Title = "Shared Housing",
                         Name = "Olga",
                         Location = "Moscow, Russia",
@@ -197,7 +197,7 @@ namespace HopeConnect.Customer.Api.Infrastructure
                     },
                     new Accommodation
                     {
-                        ImageUrl = "/images/accommodation5.jpg",
+						ImageName = "/images/accommodation5.jpg",
                         Title = "Emergency Shelter",
                         Name = "Juan",
                         Location = "Mexico City, MX",
