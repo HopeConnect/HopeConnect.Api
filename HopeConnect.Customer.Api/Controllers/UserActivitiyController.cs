@@ -1,4 +1,5 @@
 ﻿using HopeConnect.Customer.Api.BusinessUnit;
+using HopeConnect.Customer.Api.Infrastructure.Dto;
 using HopeConnect.Customer.Api.Infrastructure.Model;
 using HopeConnect.Customer.Api.Shared.Concrete;
 using Microsoft.AspNetCore.Authorization;
@@ -25,9 +26,22 @@ namespace HopeConnect.Customer.Api.Controllers
 		}
 		[HttpGet]
 		[Route("GetDonationCount")]
-		public async Task<Response<int>> TGetDonationCount()
+		public async Task<Response<int>> GetDonationCount()
 		{
 			return await _userActivitiy.TGetDonationCountAsync();
+		}
+		[HttpGet]
+		[Route("GetAllUserActivityByUserFirabaseId")]
+		public async Task<Response<IList<UserActivitiy>>> GetAllUserActivityByUserFirabaseId()
+		{
+			return await _userActivitiy.TGetAllUserActivityByUserFirabaseId();
+		}
+
+		[HttpGet]
+		[Route("GetUserDonationArchive")]
+		public async Task<Response<IList<UserDonationArchiveListDto>>> GetUserDonationArchive()
+		{
+			return await _userActivitiy.TGetUserDonationArchiveList();
 		}
 	}
 }

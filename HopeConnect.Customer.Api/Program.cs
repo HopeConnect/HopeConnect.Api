@@ -23,14 +23,8 @@ builder.Services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddTransient<IUserUtility, UserUtility>();
 builder.Services.AddTransient<IUserBusinessUnit, UserBusinessUnit>();
 builder.Services.AddTransient<IUserDataAccess, UserDataAccess>();
-builder.Services.AddTransient<IAcommodationBusinessUnit, AccommodationBusinessUnit>();
-builder.Services.AddTransient<IAccommodationDataAccess, AccommodationDataAccess>();
-builder.Services.AddTransient<IClotheBusinessUnit, ClotheBusinessUnit>();
-builder.Services.AddTransient<IClotheDataAccess, ClotheDataAccess>();
-builder.Services.AddTransient<IEducationBusinessUnit, EducationBusinessUnit>();
-builder.Services.AddTransient<IEducationDataAccess, EducationDataAccess>();
-builder.Services.AddTransient<IFoodBusinessUnit,FoodBusinessUnit>();
-builder.Services.AddTransient<IFoodDataAccess, FoodDataAccess>();
+builder.Services.AddTransient<IRecipientBusinessUnit,RecipientBusinessUnit>();
+builder.Services.AddTransient<IRecipientDataAccess, RecipientDataAccess>();
 builder.Services.AddTransient<IUserActivitiyDataAccess, UserActivitiyDataAccess>();
 builder.Services.AddTransient<IUserActivitiyBusinessUnit,  UserActivitiyBusinessUnit>();
 builder.Services.AddTransient<IGoogleCloudStroge,GoogleCloudStroge>();
@@ -70,21 +64,6 @@ builder.Services.AddCors(options =>
 });
 
 var app = builder.Build();
-using (var scope = app.Services.CreateScope())
-{
-    var services = scope.ServiceProvider;
-    try
-    {
-        var context = services.GetRequiredService<HopeConnectContext>();
-        SampleDataSeeder.Seed(context);
-    }
-    catch (Exception ex)
-    {
-        var logger = services.GetRequiredService<ILogger<Program>>();
-        logger.LogError(ex, "An error occurred while seeding the database.");
-    }
-}
-
 // Configure the HTTP request pipeline.
 app.UseSwagger();
 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Hope Connect Customer API v1"));

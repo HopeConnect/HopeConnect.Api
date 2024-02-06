@@ -10,12 +10,11 @@ namespace HopeConnect.Customer.Api.Infrastructure.Model
         public int? UserId { get; set; }
 		[JsonIgnore]
 		public User? User { get; set; }
-		public int? ActivityId { get; set; }
 		public string? Name { get; set; }
 		public string? Surname { get; set; }
 		public string? City { get; set; }
 		public string? Message { get; set; }
-		public string? DonationType { get; set; }
+		public int? RecipientId { get; set; }
 		public double? DonationAmount { get; set; }
 		[JsonIgnore]
 		public DateTime CreateAt { get; set; }

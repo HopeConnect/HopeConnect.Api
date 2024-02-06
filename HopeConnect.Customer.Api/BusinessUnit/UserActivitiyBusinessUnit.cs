@@ -1,4 +1,5 @@
 ﻿using HopeConnect.Customer.Api.DataAccess;
+using HopeConnect.Customer.Api.Infrastructure.Dto;
 using HopeConnect.Customer.Api.Infrastructure.Model;
 using HopeConnect.Customer.Api.Infrastructure.Utility;
 using HopeConnect.Customer.Api.Shared.ComplexTypes;
@@ -10,6 +11,9 @@ namespace HopeConnect.Customer.Api.BusinessUnit
 	{
 		Task<Response<UserActivitiy>> TAddAsync(UserActivitiy userActivitiy);
 		Task<Response<int>> TGetDonationCountAsync();
+		Task<Response<IList<UserActivitiy>>> TGetAllUserActivityByUserFirabaseId();
+		Task<Response<IList<UserDonationArchiveListDto>>> TGetUserDonationArchiveList();
+
 	}
 	public class UserActivitiyBusinessUnit : IUserActivitiyBusinessUnit
 	{
@@ -43,11 +47,29 @@ namespace HopeConnect.Customer.Api.BusinessUnit
 			}
 			return new Response<UserActivitiy>(ResponseCode.BadRequest, "User Donation Failed to load successfully!");
 		}
-
+		public async Task<Response<IList<UserActivitiy>>> TGetAllUserActivityByUserFirabaseId()
+		{
+			var userFirebaseId = _userUtility.GetFirebaseUserId();
+			if (userFirebaseId == null)
+			{
+				return new Response<IList<UserActivitiy>>(ResponseCode.BadRequest, "User Firebase Id Not Found!");
+			}
+			var userId = await _userBusinessUnit.TGetUserIdByUserFirebaseIdAsync();
+			var userDonation = await _userActivitiyDataAccess.GetAllUserActivityByUserId(userId.Data);
+			if (userDonation == null)
+			{
+				return new Response<IList<UserActivitiy>>(ResponseCode.NotFound, "User Donation Not Found!");
+			}
+			if (userDonation.Count() >= 0)
+			{
+				return new Response<IList<UserActivitiy>>(ResponseCode.Success, "Successful in bringing the number of donations!", userDonation);
+			}
+			return new Response<IList<UserActivitiy>>(ResponseCode.Success, "Failed to fetch donation count!");
+		}
 		public async Task<Response<int>> TGetDonationCountAsync()
 		{
 			var userFirebaseId = _userUtility.GetFirebaseUserId();
-			if(userFirebaseId == null)
+			if (userFirebaseId == null)
 			{
 				return new Response<int>(ResponseCode.BadRequest, "User Firebase Id Not Found!");
 			}
@@ -63,6 +85,37 @@ namespace HopeConnect.Customer.Api.BusinessUnit
 				return new Response<int>(ResponseCode.Success, "Successful in bringing the number of donations!", userDonationCount);
 			}
 			return new Response<int>(ResponseCode.Success, "Failed to fetch donation count!");
+		}
+		public async Task<Response<IList<UserDonationArchiveListDto>>> TGetUserDonationArchiveList()
+		{
+			var userFirebaseId = _userUtility.GetFirebaseUserId();
+			if (userFirebaseId == null)
+			{
+				return new Response<IList<UserDonationArchiveListDto>>(ResponseCode.BadRequest, "User Firebase Id Not Found!");
+			}
+			var userId = await _userBusinessUnit.TGetUserIdByUserFirebaseIdAsync();
+			if(userId == null)
+			{
+				return new Response<IList<UserDonationArchiveListDto>>(ResponseCode.BadRequest, "User Id Not Found!");
+			}
+			var userDonationArchive = await _userActivitiyDataAccess.GetAllUserActivityByUserId(userId.Data);
+			if (userDonationArchive == null)
+			{
+				return new Response<IList<UserDonationArchiveListDto>>(ResponseCode.NotFound, "User Donation Archive Not Found!");
+			}
+			var userDonationArchiveList = new List<UserDonationArchiveListDto>();
+			foreach (var item in userDonationArchive)
+			{
+				var userDonationArchiveFoodList = await _userActivitiyDataAccess.GetUserDonationArchiveFoodList(item.RecipientId.GetValueOrDefault());
+				var userDonationArchiveAccommodationList = await _userActivitiyDataAccess.GetUserDonationArchiveAccommodationList(item.RecipientId.GetValueOrDefault());
+				var userDonationArchiveClotheList = await _userActivitiyDataAccess.GetUserDonationArchiveClotheList(item.RecipientId.GetValueOrDefault());
+				var userDonationArchiveEducationList = await _userActivitiyDataAccess.GetUserDonationArchiveEducationList(item.RecipientId.GetValueOrDefault());
+				userDonationArchiveList.AddRange(userDonationArchiveFoodList);
+				userDonationArchiveList.AddRange(userDonationArchiveAccommodationList);
+				userDonationArchiveList.AddRange(userDonationArchiveClotheList);
+				userDonationArchiveList.AddRange(userDonationArchiveEducationList);
+			}
+			return new Response<IList<UserDonationArchiveListDto>>(ResponseCode.Success, userDonationArchiveList);
 		}
 	}
 }
