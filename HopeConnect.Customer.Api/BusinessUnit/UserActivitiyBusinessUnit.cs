@@ -106,10 +106,10 @@ namespace HopeConnect.Customer.Api.BusinessUnit
 			var userDonationArchiveList = new List<UserDonationArchiveListDto>();
 			foreach (var item in userDonationArchive)
 			{
-				var userDonationArchiveFoodList = await _userActivitiyDataAccess.GetUserDonationArchiveFoodList(item.RecipientId.GetValueOrDefault());
-				var userDonationArchiveAccommodationList = await _userActivitiyDataAccess.GetUserDonationArchiveAccommodationList(item.RecipientId.GetValueOrDefault());
-				var userDonationArchiveClotheList = await _userActivitiyDataAccess.GetUserDonationArchiveClotheList(item.RecipientId.GetValueOrDefault());
-				var userDonationArchiveEducationList = await _userActivitiyDataAccess.GetUserDonationArchiveEducationList(item.RecipientId.GetValueOrDefault());
+				var userDonationArchiveFoodList = await _userActivitiyDataAccess.GetUserDonationArchiveFoodList(item.RecipientId.GetValueOrDefault(), item.CreateAt);
+				var userDonationArchiveAccommodationList = await _userActivitiyDataAccess.GetUserDonationArchiveAccommodationList(item.RecipientId.GetValueOrDefault(), item.CreateAt);
+				var userDonationArchiveClotheList = await _userActivitiyDataAccess.GetUserDonationArchiveClotheList(item.RecipientId.GetValueOrDefault(), item.CreateAt);
+				var userDonationArchiveEducationList = await _userActivitiyDataAccess.GetUserDonationArchiveEducationList(item.RecipientId.GetValueOrDefault(), item.CreateAt);
 				userDonationArchiveList.AddRange(userDonationArchiveFoodList);
 				userDonationArchiveList.AddRange(userDonationArchiveAccommodationList);
 				userDonationArchiveList.AddRange(userDonationArchiveClotheList);
