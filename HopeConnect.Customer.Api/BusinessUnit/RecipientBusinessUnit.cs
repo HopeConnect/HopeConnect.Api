@@ -1,4 +1,5 @@
 ﻿using HopeConnect.Customer.Api.DataAccess;
+using HopeConnect.Customer.Api.Infrastructure.Cloud;
 using HopeConnect.Customer.Api.Infrastructure.Dto;
 using HopeConnect.Customer.Api.Infrastructure.Model;
 using HopeConnect.Customer.Api.Shared.ComplexTypes;
@@ -15,9 +16,11 @@ namespace HopeConnect.Customer.Api.BusinessUnit
 	public class RecipientBusinessUnit : IRecipientBusinessUnit
 	{
 		private readonly IRecipientDataAccess _recipientDataAccess;
-		public RecipientBusinessUnit(IRecipientDataAccess recipientDataAccess)
+		private readonly IGoogleCloudStroge _googleCloudStroge;
+		public RecipientBusinessUnit(IRecipientDataAccess recipientDataAccess, IGoogleCloudStroge googleCloudStroge)
 		{
 			_recipientDataAccess = recipientDataAccess;
+			_googleCloudStroge = googleCloudStroge;
 		}
 		public async Task<Response> AddAsync(Recipient recipient)
 		{
@@ -49,8 +52,15 @@ namespace HopeConnect.Customer.Api.BusinessUnit
 				return new Response<IList<RecipientListDto>>(ResponseCode.BadRequest, "RecipientType cannot be null");
 			}
 			var recipientEntity = await _recipientDataAccess.GetRecipientByRecipientType(recipientType);
+
 			if (recipientEntity.Any())
 			{
+				var recipientList =  recipientEntity.ToList();
+				foreach (var recipient in recipientList)
+				{
+					var recipientImageUrl = _googleCloudStroge.GenerateDownloadUrl(recipient.FolderName,recipient.ImageName);
+					recipient.ImageUrl = recipientImageUrl;
+				}
 				return new Response<IList<RecipientListDto>>(ResponseCode.Success, "Recipient list Success.", recipientEntity);
 			}
 			return new Response<IList<RecipientListDto>>(ResponseCode.NotFound, "Recipient not found");

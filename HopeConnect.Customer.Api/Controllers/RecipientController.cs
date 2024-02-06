@@ -27,7 +27,7 @@ namespace HopeConnect.Customer.Api.Controllers
 		}
 		[HttpGet]
 		[Route("GetRecipientByRecipientType")]
-		public async Task<Response<IList<RecipientListDto>>> GetRecipientByRecipientType([FromBody] int recipientType)
+		public async Task<Response<IList<RecipientListDto>>> GetRecipientByRecipientType(int recipientType)
 		{
 			return await _recipientBusinessUnit.GetRecipientByRecipientType(recipientType);
 		}

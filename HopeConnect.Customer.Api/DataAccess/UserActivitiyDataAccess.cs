@@ -1,5 +1,6 @@
 ﻿using HopeConnect.Customer.Api.Infrastructure;
 using HopeConnect.Customer.Api.Infrastructure.Dto;
+using HopeConnect.Customer.Api.Infrastructure.Enum;
 using HopeConnect.Customer.Api.Infrastructure.Model;
 using HopeConnect.Customer.Api.Shared.Concrete;
 using Microsoft.EntityFrameworkCore;
@@ -42,13 +43,13 @@ namespace HopeConnect.Customer.Api.DataAccess
 		public async Task<IList<UserActivitiyListDto>> GetDonation(int userId)
 		{
 			return await _hopeConnectContext.UserActivities.AsNoTracking().Where(x => x.UserId == userId)
-				.Select(x=> 
+				.Select(x =>
 				new UserActivitiyListDto
-				{ 
+				{
 					UserId = x.UserId,
 					Name = x.Name,
 					Surname = x.Surname,
-					Message = x.Message,	
+					Message = x.Message,
 					DonationAmount = x.DonationAmount,
 					City = x.City,
 				}).ToListAsync();
@@ -56,51 +57,57 @@ namespace HopeConnect.Customer.Api.DataAccess
 
 		public async Task<IList<UserDonationArchiveListDto>> GetUserDonationArchiveFoodList(int recipientId)
 		{
-			var userDonationArchiveList = await _hopeConnectContext.Recipients.AsNoTracking().Where(x => x.Id == recipientId && x.RecipientType == 1).Select(x=> new UserDonationArchiveListDto
+			var userDonationArchiveList = await _hopeConnectContext.Recipients.AsNoTracking().Where(x => x.Id == recipientId &&  x.RecipientType == (int)RecipientType.Food).
+				Select(x => new UserDonationArchiveListDto
 			{
-					ActivityId = x.Id,
-					Title = x.Title,
-					Name = x.Name,
-					Location = x.Location,
-					Description = x.Description
-				}).ToListAsync();
+				RecipientId = x.Id,
+				RecipientType = RecipientType.Food.ToString(),
+				Title = x.Title,
+				Name = x.Name,
+				Location = x.Location,
+				Description = x.Description,
+			}).ToListAsync();
 			return userDonationArchiveList;
 		}
 		public async Task<IList<UserDonationArchiveListDto>> GetUserDonationArchiveAccommodationList(int recipientId)
 		{
-			var userDonationArchiveList = await _hopeConnectContext.Recipients.AsNoTracking().Where(x => x.Id == recipientId && x.RecipientType == 2).Select(x=> new UserDonationArchiveListDto
+			var userDonationArchiveList = await _hopeConnectContext.Recipients.AsNoTracking().Where(x => x.Id == recipientId &&  x.RecipientType == (int)RecipientType.Accommodation).Select(x => new UserDonationArchiveListDto
 			{
-					ActivityId = x.Id,
-					ImageUrl = x.ImageName,
-					Title = x.Title,
-					Name = x.Name,
-					Location = x.Location,
-					Description = x.Description
-				}).ToListAsync();
+				RecipientId = x.Id,
+				ImageUrl = x.ImageName,
+				RecipientType = RecipientType.Accommodation.ToString(),
+				Title = x.Title,
+				Name = x.Name,
+				Location = x.Location,
+				Description = x.Description
+			}).ToListAsync();
 			return userDonationArchiveList;
-		}		
+		}
 		public async Task<IList<UserDonationArchiveListDto>> GetUserDonationArchiveClotheList(int recipientId)
 		{
-			var userDonationArchiveList = await _hopeConnectContext.Recipients.AsNoTracking().Where(x => x.Id == recipientId && x.RecipientType == 3).Select(x=> new UserDonationArchiveListDto
+			var userDonationArchiveList = await _hopeConnectContext.Recipients.AsNoTracking().Where(x => x.Id == recipientId && x.RecipientType == (int)RecipientType.Clothes).Select(x => new UserDonationArchiveListDto
 			{
-					ActivityId = x.Id,
-					Title = x.Title,
-					Name = x.Name,
-					Location = x.Location,
-					Description = x.Description,
-				}).ToListAsync();
+				RecipientId = x.Id,
+				RecipientType = RecipientType.Clothes.ToString(),
+				Title = x.Title,
+				Name = x.Name,
+				Location = x.Location,
+				Description = x.Description,
+			}).ToListAsync();
 			return userDonationArchiveList;
-		}		
+		}
 		public async Task<IList<UserDonationArchiveListDto>> GetUserDonationArchiveEducationList(int recipientId)
 		{
-			var userDonationArchiveList = await _hopeConnectContext.Recipients.AsNoTracking().Where(x => x.Id == recipientId && x.RecipientType == 4).Select(x=> new UserDonationArchiveListDto
+			var userDonationArchiveList = await _hopeConnectContext.Recipients.AsNoTracking().
+				Where(x => x.Id == recipientId && x.RecipientType == (int)RecipientType.Education).Select(x => new UserDonationArchiveListDto
 			{
-					ActivityId = x.Id,
-					Title = x.Title,
-					Name = x.Name,
-					Location = x.Location,
-					Description = x.Description
-				}).ToListAsync();
+				RecipientId = x.Id,
+				RecipientType= RecipientType.Education.ToString(),	
+				Title = x.Title,
+				Name = x.Name,
+				Location = x.Location,
+				Description = x.Description
+			}).ToListAsync();
 			return userDonationArchiveList;
 		}
 	}

@@ -9,6 +9,8 @@
 		public string Name { get; set; }
 		public string Location { get; set; }
 		public string Description { get; set; }
-		public int RecipientType { get; set; }
+		public int RecipientId { get; set; }
+		public string RecipientType { get; set; }
+		public string ImageUrl { get; set; }
     }
 }

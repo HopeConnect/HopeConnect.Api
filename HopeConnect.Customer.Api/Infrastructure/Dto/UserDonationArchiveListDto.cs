@@ -2,7 +2,8 @@
 {
 	public class UserDonationArchiveListDto
 	{
-		public int ActivityId { get; set; }
+		public int RecipientId { get; set; }
+		public string RecipientType { get; set; }
 		public string ImageUrl { get; set; }
 		public string Title { get; set; }
 		public string Name { get; set; }

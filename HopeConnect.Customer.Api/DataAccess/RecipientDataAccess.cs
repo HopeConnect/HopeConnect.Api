@@ -1,5 +1,6 @@
 ﻿using HopeConnect.Customer.Api.Infrastructure;
 using HopeConnect.Customer.Api.Infrastructure.Dto;
+using HopeConnect.Customer.Api.Infrastructure.Enum;
 using HopeConnect.Customer.Api.Infrastructure.Model;
 using Microsoft.EntityFrameworkCore;
 
@@ -41,7 +42,6 @@ namespace HopeConnect.Customer.Api.DataAccess
 				Description = x.Description,
 				FolderName = x.FolderName,
 				ImageName = x.ImageName,
-				RecipientType = x.RecipientType	
 			}).ToListAsync();
 		}
 
@@ -56,7 +56,6 @@ namespace HopeConnect.Customer.Api.DataAccess
 				Description = x.Description,
 				FolderName = x.FolderName,
 				ImageName = x.ImageName,
-				RecipientType = x.RecipientType
 			}).ToListAsync();
 		}
 		public async Task<int> UpdateAsync(Recipient recipient)
