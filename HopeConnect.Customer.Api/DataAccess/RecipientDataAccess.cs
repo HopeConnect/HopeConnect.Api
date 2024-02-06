@@ -13,6 +13,7 @@ namespace HopeConnect.Customer.Api.DataAccess
 		Task<int> UpdateAsync(Recipient recipient);
 		Task<IList<RecipientListDto>> GetAllRecipient();
 		Task<IList<RecipientListDto>> GetRecipientByRecipientType(int recipientType);
+		Task<IList<RecipientCoordinationDto>> GetRecipientLatitudeAndLongitude();
 	}
 	public class RecipientDataAccess : IRecipientDataAccess
 	{
@@ -36,12 +37,15 @@ namespace HopeConnect.Customer.Api.DataAccess
 			return await _context.Recipients.AsNoTracking().OrderByDescending(x => x.Id).Select(x => new RecipientListDto
 			{
 				Id = x.Id,
+				RecipientId = x.Id,
 				Name = x.Name,
 				Location = x.Location,
 				Title = x.Title,
 				Description = x.Description,
 				FolderName = x.FolderName,
 				ImageName = x.ImageName,
+				Latitude = x.Latitude,
+				Longitude = x.Longitude
 			}).ToListAsync();
 		}
 
@@ -58,6 +62,18 @@ namespace HopeConnect.Customer.Api.DataAccess
 				ImageName = x.ImageName,
 			}).ToListAsync();
 		}
+
+		public async Task<IList<RecipientCoordinationDto>> GetRecipientLatitudeAndLongitude()
+		{
+			return await _context.Recipients.AsNoTracking().Select(x => new RecipientCoordinationDto
+			{
+				Title = x.Title,
+				Description = x.Description,
+				Latitude = x.Latitude,
+				Longitude = x.Longitude
+			}).ToListAsync();
+		}
+
 		public async Task<int> UpdateAsync(Recipient recipient)
 		{
 			_context.Recipients.Update(recipient);

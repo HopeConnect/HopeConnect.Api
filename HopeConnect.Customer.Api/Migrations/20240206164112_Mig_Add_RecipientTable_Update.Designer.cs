@@ -4,6 +4,7 @@ using HopeConnect.Customer.Api.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HopeConnect.Customer.Api.Migrations
 {
     [DbContext(typeof(HopeConnectContext))]
-    partial class HopeConnectContextModelSnapshot : ModelSnapshot
+    [Migration("20240206164112_Mig_Add_RecipientTable_Update")]
+    partial class Mig_Add_RecipientTable_Update
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -31,5 +31,11 @@ namespace HopeConnect.Customer.Api.Controllers
 		{
 			return await _recipientBusinessUnit.GetRecipientByRecipientType(recipientType);
 		}
+		[HttpGet]
+		[Route("GetRecipientLatitudeAndLongitude")]
+		public async Task<Response<IList<RecipientCoordinationDto>>> GetRecipientLatitudeAndLongitude()
+		{
+			return await _recipientBusinessUnit.TGetRecipientLatitudeAndLongitude();
+		}
 	}
 }
