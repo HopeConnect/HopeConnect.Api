@@ -28,6 +28,7 @@ builder.Services.AddTransient<IRecipientDataAccess, RecipientDataAccess>();
 builder.Services.AddTransient<IUserActivitiyDataAccess, UserActivitiyDataAccess>();
 builder.Services.AddTransient<IUserActivitiyBusinessUnit,  UserActivitiyBusinessUnit>();
 builder.Services.AddTransient<IGoogleCloudStroge,GoogleCloudStroge>();
+builder.Services.AddTransient<IImageUtility, ImageUtility>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -68,7 +69,7 @@ var app = builder.Build();
 app.UseSwagger();
 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Hope Connect Customer API v1"));
 app.UseHttpsRedirection();
-app.UseCors("AllowAll");
+app.UseCors();
 app.UseAuthentication();
 app.UseAuthorization();
 

@@ -29,5 +29,11 @@ namespace HopeConnect.Customer.Api.Controllers
 		{
 			return await _userBusinessUnit.TGetAllUserAsync();
 		}
+		[HttpPut]
+		[Route("UpdateUserImage")]
+		public async Task<Response> UpdateUserImageAsync(UserImageUploadDto userImageUploadDto)
+		{
+			return await _userBusinessUnit.TUpdateUserImageAsync(userImageUploadDto);
+		}
 	}
 }

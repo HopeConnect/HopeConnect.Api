@@ -16,7 +16,6 @@ namespace HopeConnect.Customer.Api.Controllers
 		{
 			_googleCloudStroge = googleCloudStroge;
 		}
-
 		[HttpGet]
 		[Route("GetFile")]
 		public async Task<IActionResult> GetFile(string fileName)
@@ -31,17 +30,21 @@ namespace HopeConnect.Customer.Api.Controllers
 		[Route("GetFileUrl")]
 		public async Task<IActionResult> GetFileUrl(string folderName, string fileName)
 		{
-			//var client = StorageClient.Create();
-			//var bucketObject = await client.GetObjectAsync("hopeconnect", fileName);
-			//return Ok(bucketObject.MediaLink);
 			return Ok(_googleCloudStroge.GenerateDownloadUrl(folderName, fileName));
 		}
 		[HttpPost]
+		[Route("UploadFile")]
 		public async Task<IActionResult> UploadFile([FromBody] FileUpload file)
 		{
 			var client = StorageClient.Create();
 			await client.UploadObjectAsync("hopeconnect", file.FileName, file.FileType, new MemoryStream(file.File));
 			return Ok();
+		}
+		[HttpPost]
+		[Route("UploadImageWithBase64String")]
+		public async Task<string> UploadImageWithBase64String(string fileBase64, string fileName, string folderName)
+		{
+			return await _googleCloudStroge.UploadImageWithBase64String(fileBase64, fileName, folderName);
 		}
 		public class FileUpload
 		{
