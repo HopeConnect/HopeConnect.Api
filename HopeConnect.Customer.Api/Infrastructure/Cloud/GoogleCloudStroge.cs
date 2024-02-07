@@ -49,5 +49,10 @@ namespace HopeConnect.Customer.Api.Infrastructure.Cloud
 			var dataObject = await _storageClient.UploadObjectAsync(_bucketName, await GetObjectName(fileNameForStorage, folderName), "image/png", memoryStream);
 			return dataObject.Name;
 		}
+
+		public async Task DeleteObjectAsync(string fileNameForStorage, string folderName)
+		{
+			await _storageClient.DeleteObjectAsync(_bucketName, await GetObjectName(fileNameForStorage, folderName));
+		}
 	}
 }

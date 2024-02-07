@@ -8,5 +8,6 @@ namespace HopeConnect.Customer.Api.Infrastructure.Cloud
 		Task<string> UploadImageWithBase64String(string fileBase64, string fileName, string folderName);
 		Task<string> UploadImageAsync(Image imageFile, string fileNameForStorage, string folderName = "");
 		Task<string> UploadMemoryStreamForMenuAsync(MemoryStream memoryStream, string fileNameForStorage, string folderName = "");
+		Task DeleteObjectAsync(string fileNameForStorage, string folderName);
 	}
 }
