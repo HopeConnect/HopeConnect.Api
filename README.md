@@ -1,7 +1,7 @@
 <br/>
 <p align="center">
   <a href="https://github.com/HopeConnect/HopeConnect.Api"> 
-    <img src="HopeConnect/TestAPP/assets/images/hopelogo.png" alt="Logo" width="80" height="80">
+    <img src="HopeConnect/TestAPP/main/assets/images/hopelogo.jpeg" alt="Logo" width="80" height="80">
   </a>
 
   <h3 align="center">Hope Connect Api</h3>
