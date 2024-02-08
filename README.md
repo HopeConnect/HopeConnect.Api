@@ -30,7 +30,7 @@
 
 ## About The Project
 
-![Screen Shot](images/screenshot.png)
+![Screen Shot](Images/HopeConnectApi.png)
 
 HopeConnect is a platform created to address urgent issues such as homelessness, hunger, and lack of education faced by millions of people worldwide. The project aims to alleviate difficulties in accessing basic needs and provide support to individuals struggling with these issues.
 
