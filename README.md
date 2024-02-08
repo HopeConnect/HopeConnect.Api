@@ -141,5 +141,5 @@ By contributing to HopeConnect, you agree that your contributions will be licens
 ## Authors
 
 * **Serkan Özbey Kurucu** - *JR. Software Developer* - [Serkan Özbey Kurucu](https://github.com/serkanozbeykurucu/) - **
-* **Mustafa Özvardar** - *JR. Full Stack Software Developer* - [Mustafa Özvardar](https://github.com/mustafaozvar/) - **
+* **Mustafa Özvardar** - *JR. Full Stack Software Developer* - [Mustafa Özvardar](https://github.com/mustafaozvardar/) - **
 
