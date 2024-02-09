@@ -25,7 +25,8 @@ namespace HopeConnect.Customer.Api.DataAccess
 		public async Task<int> AddAsync(Recipient recipient)
 		{
 			await _context.Recipients.AddAsync(recipient);
-			return await _context.SaveChangesAsync();
+			await _context.SaveChangesAsync();
+			return recipient.Id;
 		}
 		public async Task<int> DeleteAsync(Recipient recipient)
 		{

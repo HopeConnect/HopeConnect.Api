@@ -9,7 +9,7 @@ namespace HopeConnect.Customer.Api.BusinessUnit
 {
 	public interface IRecipientBusinessUnit
 	{
-		Task<Response> AddAsync(Recipient recipient);
+		Task<Response> AddAsync(RecipientDto recipientDto);
 		Task<Response<IList<RecipientListDto>>> TGetAllRecipientAsync();
 		Task<Response<IList<RecipientListDto>>> GetRecipientByRecipientType(int recipientType);
 		Task<Response<IList<RecipientCoordinationDto>>> TGetRecipientLatitudeAndLongitude();
@@ -18,20 +18,72 @@ namespace HopeConnect.Customer.Api.BusinessUnit
 	{
 		private readonly IRecipientDataAccess _recipientDataAccess;
 		private readonly IGoogleCloudStroge _googleCloudStroge;
-		public RecipientBusinessUnit(IRecipientDataAccess recipientDataAccess, IGoogleCloudStroge googleCloudStroge)
+		private readonly IUserActivitiyBusinessUnit _userActivitiyBusinessUnit;
+		public RecipientBusinessUnit(IRecipientDataAccess recipientDataAccess, IGoogleCloudStroge googleCloudStroge, IUserActivitiyBusinessUnit userActivitiyBusinessUnit)
 		{
 			_recipientDataAccess = recipientDataAccess;
 			_googleCloudStroge = googleCloudStroge;
+			_userActivitiyBusinessUnit = userActivitiyBusinessUnit;
 		}
-		public async Task<Response> AddAsync(Recipient recipient)
+		public async Task<Response> AddAsync(RecipientDto recipientDto)
 		{
-			if (recipient == null)
+			if (recipientDto == null)
 			{
 				return new Response(ResponseCode.BadRequest, "Recipient cannot be null");
 			}
-			var saveChangesValue = await _recipientDataAccess.AddAsync(recipient);
+			var recipientEntity = new Recipient
+			{
+				Name = recipientDto.Name,
+				RecipientType = recipientDto.RecipientType,
+				Description = recipientDto.Description,
+				Latitude = recipientDto.Latitude,
+				Longitude = recipientDto.Longitude,
+				Location = recipientDto.Location,
+				Title = recipientDto.Title,
+			};
+			switch (recipientDto.RecipientType)
+			{
+				case 1:
+					recipientDto.FolderName = "Food";
+					break;
+				case 2:
+					recipientDto.FolderName = "Accommodation";
+					break;
+				case 3:
+					recipientDto.FolderName = "Education";
+					break;
+				case 4:
+					recipientDto.FolderName = "Clothe";
+					break;
+				default:
+					recipientDto.FolderName = "Recipient";
+					break;
+			}
+			recipientDto.ImageName = Guid.NewGuid().ToString() + ".png";
+			if (recipientDto.Base64Image != null)
+			{
+				var imageName = await _googleCloudStroge.UploadImageWithBase64String(recipientDto.Base64Image, recipientDto.ImageName, recipientDto.FolderName);
+				recipientEntity.ImageName = recipientDto.ImageName;
+				recipientEntity.FolderName = recipientDto.FolderName;
+			}
+			var saveChangesValue = await _recipientDataAccess.AddAsync(recipientEntity);
 			if (saveChangesValue > 0)
 			{
+				var userActivity = new UserActivitiy
+				{
+					DonationAmount = 0,
+					Name = recipientDto.Name,
+					Surname = recipientDto.Name,
+					City = recipientDto.Location,
+					Message = recipientDto.Description,
+					RecipientId = saveChangesValue,
+					HelpType = 2,
+				};
+				var response = await _userActivitiyBusinessUnit.TAddUserRecipientNotificationActivity(userActivity);
+				if(response.ResponseCode != ResponseCode.Success)
+				{
+					return new Response(ResponseCode.BadRequest, "Recipient cannot be added");
+				}
 				return new Response(ResponseCode.Success, "Recipient added successfully");
 			}
 			return new Response(ResponseCode.BadRequest, "Recipient cannot be added");

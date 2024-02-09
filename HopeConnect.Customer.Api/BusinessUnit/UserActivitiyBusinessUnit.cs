@@ -10,7 +10,10 @@ namespace HopeConnect.Customer.Api.BusinessUnit
 	public interface IUserActivitiyBusinessUnit
 	{
 		Task<Response<UserActivitiy>> TAddAsync(UserActivitiy userActivitiy);
+		Task<Response<UserActivitiy>> TAddUserRecipientNotificationActivity(UserActivitiy userActivitiy);
 		Task<Response<int>> TGetDonationCountAsync();
+		Task<Response<int>> TGetUserHelpNotificationCount();
+
 		Task<Response<IList<UserActivitiy>>> TGetAllUserActivityByUserFirabaseId();
 		Task<Response<IList<UserDonationArchiveListDto>>> TGetUserDonationArchiveList();
 
@@ -38,6 +41,7 @@ namespace HopeConnect.Customer.Api.BusinessUnit
 				return new Response<UserActivitiy>(ResponseCode.BadRequest, "User Id Not Found!");
 			}
 			var userId = await _userBusinessUnit.TGetUserIdByUserFirebaseIdAsync();
+			userActivitiy.HelpType = 1;
 			userActivitiy.UserId = userId.Data;
 			userActivitiy.CreateAt = DateTime.UtcNow;
 			var saveChangesValue = _userActivitiyDataAccess.Add(userActivitiy);
@@ -47,6 +51,34 @@ namespace HopeConnect.Customer.Api.BusinessUnit
 			}
 			return new Response<UserActivitiy>(ResponseCode.BadRequest, "User Donation Failed to load successfully!");
 		}
+
+		public async Task<Response<UserActivitiy>> TAddUserRecipientNotificationActivity(UserActivitiy userActivitiy)
+		{
+			var userFirebaseId = _userUtility.GetFirebaseUserId();
+			if (userFirebaseId == null)
+			{
+				return new Response<UserActivitiy>(ResponseCode.BadRequest, "User Firebase Id Not Found!");
+			}
+			var userId = await _userBusinessUnit.TGetUserIdByUserFirebaseIdAsync();
+			if (userFirebaseId == null)
+			{
+				return new Response<UserActivitiy>(ResponseCode.BadRequest, "User Id Not Found!");
+			}
+			if(userActivitiy == null)
+			{
+				return new Response<UserActivitiy>(ResponseCode.BadRequest, "User Activity Not Found!");
+			}
+			userActivitiy.UserId = userId.Data;
+			userActivitiy.CreateAt = DateTime.UtcNow;
+			var saveChangesValue = _userActivitiyDataAccess.Add(userActivitiy);
+			if (saveChangesValue > 0)
+			{
+				return new Response<UserActivitiy>(ResponseCode.Success, "User Donation Added Successfully!");
+			}
+			return new Response<UserActivitiy>(ResponseCode.BadRequest, "User Donation Failed to load successfully!");
+
+		}
+
 		public async Task<Response<IList<UserActivitiy>>> TGetAllUserActivityByUserFirabaseId()
 		{
 			var userFirebaseId = _userUtility.GetFirebaseUserId();
@@ -116,6 +148,27 @@ namespace HopeConnect.Customer.Api.BusinessUnit
 				userDonationArchiveList.AddRange(userDonationArchiveEducationList);
 			}
 			return new Response<IList<UserDonationArchiveListDto>>(ResponseCode.Success, userDonationArchiveList);
+		}
+
+		public async Task<Response<int>> TGetUserHelpNotificationCount()
+		{
+			var userFirebaseId = _userUtility.GetFirebaseUserId();
+			if (userFirebaseId == null)
+			{
+				return new Response<int>(ResponseCode.BadRequest, "User Firebase Id Not Found!");
+			}
+			var userId = await _userBusinessUnit.TGetUserIdByUserFirebaseIdAsync(); ;
+			var userHelpNotification = await _userActivitiyDataAccess.GetHelpNotification(userId.Data);
+			if (userHelpNotification == null)
+			{
+				return new Response<int>(ResponseCode.NotFound, "User Donation Not Found!");
+			}
+			var userHelpNotificationCount = userHelpNotification.Count();
+			if (userHelpNotificationCount >= 0)
+			{
+				return new Response<int>(ResponseCode.Success, "Successful in bringing the number of donations!", userHelpNotificationCount);
+			}
+			return new Response<int>(ResponseCode.Success, "Failed to fetch donation count!");
 		}
 	}
 }

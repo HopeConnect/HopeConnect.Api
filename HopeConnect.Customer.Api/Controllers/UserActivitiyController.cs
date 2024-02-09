@@ -31,6 +31,12 @@ namespace HopeConnect.Customer.Api.Controllers
 			return await _userActivitiy.TGetDonationCountAsync();
 		}
 		[HttpGet]
+		[Route("GetUserHelpNotificationCount")]
+		public async Task<Response<int>> GetUserHelpNotificationCount()
+		{
+			return await _userActivitiy.TGetUserHelpNotificationCount();
+		}
+		[HttpGet]
 		[Route("GetAllUserActivityByUserFirabaseId")]
 		public async Task<Response<IList<UserActivitiy>>> GetAllUserActivityByUserFirabaseId()
 		{

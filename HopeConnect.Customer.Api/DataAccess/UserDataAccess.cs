@@ -47,7 +47,10 @@ namespace HopeConnect.Customer.Api.DataAccess
 				FirebaseId = x.FirebaseUserId,
 				Email = x.Email,
 				FullName = x.FullName,
-				UserImageName = x.ImageName
+				UserImageName = x.ImageName,
+				Age = x.Age,
+				City = x.City,
+				Country = x.Country,
 			}).FirstOrDefaultAsync();
 			return user;
 		}

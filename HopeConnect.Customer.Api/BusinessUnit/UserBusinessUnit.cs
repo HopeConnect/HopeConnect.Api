@@ -11,7 +11,7 @@ namespace HopeConnect.Customer.Api.BusinessUnit
 	public interface IUserBusinessUnit
 	{
 		Task<Response> TAddAsync(User user);
-		Task<Response> TUpdateAsync(UserListDto user);
+		Task<Response> TUpdateAsync(User user);
 		Task<Response> TDeleteByFirebaseUserIdAsync(string firebaseUserId);
 		Task<Response<UserListDto>> TGetUserByUserFirebaseIdAsync();
 		Task<Response<IList<User>>> TGetAllUserAsync();
@@ -110,9 +110,36 @@ namespace HopeConnect.Customer.Api.BusinessUnit
 			return new Response<int>(ResponseCode.NotFound, "User Id not found!");
 		}
 
-		public async Task<Response> TUpdateAsync(UserListDto user)
+		public async Task<Response> TUpdateAsync(User user)
 		{
-			throw new NotImplementedException();
+			if (user == null)
+			{
+				return new Response(ResponseCode.BadRequest, "User cannot be null");
+			}
+			var userFirebaseId = _userUtility.GetFirebaseUserId();
+			if (string.IsNullOrEmpty(userFirebaseId))
+			{
+				return new Response(ResponseCode.BadRequest, "Firebase user id cannot be empty");
+			}
+			var userEntity = await _userDataAccess.GetUserIdAsync(userFirebaseId);
+			if (userEntity == null)
+			{
+				return new Response(ResponseCode.NotFound, "User not found");
+			}
+			userEntity.FirebaseUserId = userEntity.FirebaseUserId;
+			userEntity.Email = userEntity.Email;
+			userEntity.FolderName = userEntity.FolderName;
+			userEntity.ImageName = userEntity.ImageName;
+			userEntity.FullName = user.FullName;
+			userEntity.Country = user.Country;
+			userEntity.City = user.City;
+			userEntity.Age = user.Age;
+			var saveChangesValue = await _userDataAccess.UpdateAsync(userEntity);
+			if (saveChangesValue > 0)
+			{
+				return new Response(ResponseCode.Success, "User updated successfully");
+			}
+			return new Response(ResponseCode.BadRequest, "User not updated");
 		}
 
 		public async Task<Response> TUpdateUserImageAsync(UserImageUploadDto userImageUploadDto)
